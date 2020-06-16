@@ -11,12 +11,12 @@ int main(int argc, char const *argv[]) {
 
    std::string mensagem;
 
-   if (argc == 2 || function.compare(argv[1]) != 0) {
+   if (argc == 2) {
      std::cout << "Digite uma mensagem:\n";
      std::getline(std::cin, mensagem);
    }
 
-   if (argc > 2 || function.compare(argv[1]) != 0) {
+   if (argc > 2) {
        for (int i = 2; i < argc; i++){
             mensagem += argv[i];
             mensagem += " ";
