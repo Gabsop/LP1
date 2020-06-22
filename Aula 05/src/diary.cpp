@@ -10,7 +10,7 @@ void show_usage(const std::string &prog_name) {
 }
 
 void list(){
-    std::ifstream file("messages.md");
+    std::ifstream file("../messages.md");
 
     if(!file.is_open()){
         std::cerr << "Arquivo inexistente ou sem permissão de leitura" << std::endl;
@@ -36,7 +36,7 @@ void list(){
 }
 
 bool checkData(){
-    std::ifstream file("messages.md");
+    std::ifstream file("../messages.md");
     std::string date = "# " + get_current_date();
     std::string message;
     if(!file.is_open()){
