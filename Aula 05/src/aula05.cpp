@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]){
         message = argv[2];
     }
 
-    std::ofstream file("messages.md", std::ios::app);
+    std::ofstream file("../messages.md", std::ios::app);
 
     if(!file.is_open()){
         std::cerr << "O arquivo não pode ser criado." << std::endl;
