@@ -17,19 +17,19 @@ test.o: src/test.cpp
 	@echo "Compilando o teste..."
 	$(GCC) $(GCC_FLAGS) -c src/test.cpp
 
-Diary.o: src/Diary.cpp
+Diary.o: src/Diary.cpp include/Diary.h
 	$(GCC) $(GCC_FLAGS) -c src/Diary.cpp
 
-Date.o: src/Date.cpp
+Date.o: src/Date.cpp include/Date.h
 	$(GCC) $(GCC_FLAGS) -c src/Date.cpp
 
-Time.o: src/Time.cpp
+Time.o: src/Time.cpp include/Time.h
 	$(GCC) $(GCC_FLAGS) -c src/Time.cpp
 
-App.o: src/App.cpp
+App.o: src/App.cpp include/App.h
 	$(GCC) $(GCC_FLAGS) -c src/App.cpp
 
-Aux.o: src/Aux.cpp
+Aux.o: src/Aux.cpp include/Aux.h
 	$(GCC) $(GCC_FLAGS) -c src/Aux.cpp
 
 doc.pdf: messages.md
