@@ -6,16 +6,9 @@
 #include "../include/Time.h"
 #include "../include/Aux.h"
 
-Diary::Diary(const std::string &filename) : filename(filename),
-                                            messages(nullptr), messages_size(0), messages_capacity(10)
+Diary::Diary(const std::string &filename) : filename(filename)
 {
-    messages = new Message[messages_capacity];
     load_messages();
-}
-
-Diary::~Diary()
-{
-    delete[] messages;
 }
 
 void Diary::add(const std::string &message)
@@ -35,7 +28,7 @@ void Diary::add(const std::string &message)
     current_message.date = current_date;
     current_message.time = current_time;
 
-    messages[messages_size] = current_message;
+    messages.push_back(current_message);
     std::cout << "Mensagem Adicionada!" << std::endl;
 }
 
@@ -55,20 +48,19 @@ void Diary::write()
     if (check == false)
     {
         file << "\n";
-        file << "# " << messages[messages_size].date.to_string() << std::endl;
+        file << "# " << messages.back().date.to_string() << std::endl;
         file << "\n";
-        file << "- " << messages[messages_size].time.to_string() << " " << messages[messages_size].content << "\n";
+        file << "- " << messages.back().time.to_string() << " " << messages.back().content << "\n";
     }
     else if (check == true)
     {
-        file << "- " << get_current_time() << " " << messages[messages_size].content << "\n";
+        file << "- " << get_current_time() << " " << messages.back().content << "\n";
     }
-    messages_size++;
 }
 
 void Diary::load_messages()
 {
-
+    Message m;
     std::string message;
     std::string date;
     std::ifstream file("messages.md");
@@ -87,7 +79,6 @@ void Diary::load_messages()
             continue;
         }
         char compare = message.at(0);
-        std::cout << compare << std::endl;
 
         if (compare == '#')
         {
@@ -96,12 +87,11 @@ void Diary::load_messages()
             char discard;
             stream >> discard;
             stream >> date;
-            messages[messages_size].date.set_from_string(date);
+            m.date.set_from_string(date);
         }
 
         if (compare == '-')
         {
-
             std::stringstream stream(message);
             std::string content;
             std::string time;
@@ -109,42 +99,27 @@ void Diary::load_messages()
             char discard;
             stream >> discard;
             stream >> time;
-            messages[messages_size].time.set_from_string(time);
-            messages[messages_size].date.set_from_string(date);
+            m.time.set_from_string(time);
+            m.date.set_from_string(date);
             std::getline(stream, content);
-            messages[messages_size].content = content;
-            messages_size++; // aqui
-
-            if (messages_size >= messages_capacity)
-            {
-                messages_capacity *= 2;
-
-                Message *messages_aux = new Message[messages_capacity];
-
-                for (size_t i = 0; i < messages_capacity / 2; i++)
-                {
-                    messages_aux[i] = messages[i];
-                }
-
-                delete[] messages;
-                messages = messages_aux;
-            }
+            m.content = content;
+            messages.push_back(m);
         }
     }
 }
 
-Message *Diary::search(const std::string &what)
+std::vector<Message *> Diary::search(const std::string &what)
 {
-    Message *message;
+    std::vector<Message *> message;
     size_t search;
 
-    for (size_t i = 0; i < messages_size; i++)
+    for (size_t i = 0; i < messages.size(); i++)
     {
         search = messages[i].content.find(what);
         if (search != std::string::npos)
         {
-            return message = &messages[i];
+            message.push_back(&messages[i]);
         }
     }
-    return nullptr;
+    return message;
 }
